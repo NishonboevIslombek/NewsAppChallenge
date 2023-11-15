@@ -17,6 +17,7 @@ object Constants {
                 "https://cdn.mos.cms.futurecdn.net/jiYUobfW8zQEZVUBUFQBpn-1200-80.jpg"
             ),
             Pair(
+
                 "Zaamin Tourism unveils ambitious \$400mn investment plans at UNWTO General Assembly.",
                 "https://afar.brightspotcdn.com/dims4/default/6050a6d/2147483647/strip/false/crop/1000x563+0+52/resize/1200x675!/quality/90/?url=https%3A%2F%2Fafar-media-production-web.s3.us-west-2.amazonaws.com%2Fbrightspot%2F45%2Fdf%2Ff283c25ce6652af26443d3d61465%2Foriginal-samarkand-mehmeto.jpg"
             ),

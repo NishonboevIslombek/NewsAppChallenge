@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenPortrait() {
+fun HomeScreenPortrait(onNewsClicked: () -> Unit) {
     Surface(color = MaterialTheme.colorScheme.background) {
         Scaffold(
             modifier = Modifier
@@ -48,14 +48,14 @@ fun HomeScreenPortrait() {
                 modifier = Modifier
                     .padding(it)
                     .padding(top = 20.dp)
-            )
+            ) { onNewsClicked() }
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HomeScreen(modifier: Modifier = Modifier) {
+private fun HomeScreen(modifier: Modifier = Modifier, onNewsClicked: () -> Unit) {
     val pagerState = rememberPagerState { Constants.testHomeTabList.size }
     val tabsList = remember { Constants.testHomeTabList.map { it.second } }
 
@@ -75,13 +75,19 @@ private fun HomeScreen(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
-        ViewPagerHomeScreen(pagerState = pagerState)
+        ViewPagerHomeScreen(pagerState = pagerState) {
+            onNewsClicked()
+        }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ViewPagerHomeScreen(modifier: Modifier = Modifier, pagerState: PagerState) {
+private fun ViewPagerHomeScreen(
+    modifier: Modifier = Modifier,
+    pagerState: PagerState,
+    onNewsClicked: () -> Unit
+) {
     HorizontalPager(
         state = pagerState,
         modifier = modifier
@@ -94,9 +100,13 @@ private fun ViewPagerHomeScreen(modifier: Modifier = Modifier, pagerState: Pager
             item { TopNewsSection() }
             items(20) {
                 SimpleNewsElement(
-                    modifier = Modifier.padding(
-                        horizontal = 20.dp
-                    )
+                    modifier = Modifier
+                        .clickable {
+                            onNewsClicked()
+                        }
+                        .padding(
+                            horizontal = 20.dp
+                        )
                 )
             }
         }

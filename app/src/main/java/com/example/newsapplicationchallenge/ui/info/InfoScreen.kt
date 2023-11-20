@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.details
+package com.example.newsapplicationchallenge.ui.info
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -46,17 +46,17 @@ import com.example.newsapplicationchallenge.ui.utils.NewsAuthor
 import com.example.newsapplicationchallenge.ui.utils.NewsType
 
 @Composable
-fun DetailsScreenPortrait() {
+fun InfoScreenPortrait(onBackClicked: () -> Unit) {
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier.fillMaxSize()
     ) {
-        DetailsScreen(modifier = Modifier.fillMaxSize())
+        InfoScreen(modifier = Modifier.fillMaxSize()) { onBackClicked() }
     }
 }
 
 @Composable
-fun DetailsScreen(modifier: Modifier = Modifier) {
+fun InfoScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit) {
     val scrollState = rememberScrollState()
     val topBarAnimationFinished = remember { mutableStateOf(false) }
     val topBarAnimation = animateColorAsState(
@@ -75,20 +75,20 @@ fun DetailsScreen(modifier: Modifier = Modifier) {
                 .verticalScroll(scrollState)
                 .padding(bottom = 60.dp)
         ) {
-            HeaderDetailsScreen()
-            BodyDetailsScreen(modifier = Modifier.padding(horizontal = 20.dp))
+            HeaderInfoScreen()
+            BodyInfoScreen(modifier = Modifier.padding(horizontal = 20.dp))
         }
-        TopBarDetailsScreen(
+        TopBarInfoScreen(
             modifier = Modifier
                 .shadow(if (scrollState.canScrollBackward && topBarAnimationFinished.value) 10.dp else 0.dp)
                 .background(topBarAnimation.value)
                 .padding(top = 40.dp)
-        )
+        ) { onBackClicked() }
     }
 }
 
 @Composable
-fun HeaderDetailsScreen(modifier: Modifier = Modifier) {
+fun HeaderInfoScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.size(450.dp)
     ) {
@@ -109,14 +109,14 @@ fun HeaderDetailsScreen(modifier: Modifier = Modifier) {
                 .align(Alignment.BottomStart)
                 .padding(20.dp)
         ) {
-            TypeAndTimeDetailsScreen()
-            TitleDetailsScreen()
+            TypeAndTimeInfoScreen()
+            TitleInfoScreen()
         }
     }
 }
 
 @Composable
-fun BodyDetailsScreen(modifier: Modifier = Modifier) {
+fun BodyInfoScreen(modifier: Modifier = Modifier) {
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = modifier
@@ -141,23 +141,23 @@ fun BodyDetailsScreen(modifier: Modifier = Modifier) {
             LikeButtonWithBackground()
             CommentButtonWithBackground()
         }
-        DescriptionDetailsScreen()
+        DescriptionInfoScreen()
     }
 }
 
 @Composable
-private fun TopBarDetailsScreen(modifier: Modifier = Modifier) {
+private fun TopBarInfoScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
-        ArrowBackIcon()
+        ArrowBackIcon { onBackClicked() }
         BookmarkIcon(tint = MaterialTheme.colorScheme.onPrimary)
     }
 }
 
 @Composable
-private fun TitleDetailsScreen(modifier: Modifier = Modifier) {
+private fun TitleInfoScreen(modifier: Modifier = Modifier) {
     Text(
         text = Constants.testTopNewsList[0].first,
         style = MaterialTheme.typography.titleLarge,
@@ -166,7 +166,7 @@ private fun TitleDetailsScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun TypeAndTimeDetailsScreen(modifier: Modifier = Modifier) {
+private fun TypeAndTimeInfoScreen(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -183,7 +183,7 @@ private fun TypeAndTimeDetailsScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DescriptionDetailsScreen(modifier: Modifier = Modifier) {
+fun DescriptionInfoScreen(modifier: Modifier = Modifier) {
     Text(
         text = buildAnnotatedString {
             withStyle(

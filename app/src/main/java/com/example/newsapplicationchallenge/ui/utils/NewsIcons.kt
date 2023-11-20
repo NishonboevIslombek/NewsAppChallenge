@@ -41,9 +41,10 @@ fun BookmarkIcon(
 @Composable
 fun ArrowBackIcon(
     modifier: Modifier = Modifier,
-    tint: Color = MaterialTheme.colorScheme.onPrimary
+    tint: Color = MaterialTheme.colorScheme.onPrimary,
+    onClick: () -> Unit
 ) {
-    IconButton(onClick = {}, modifier = modifier) {
+    IconButton(onClick = onClick, modifier = modifier) {
         Icon(
             imageVector = Icons.Rounded.ArrowBack,
             contentDescription = "Icon Arrow Back",

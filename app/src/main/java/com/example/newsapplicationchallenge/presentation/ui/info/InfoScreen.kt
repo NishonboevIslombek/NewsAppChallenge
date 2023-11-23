@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.info
+package com.example.newsapplicationchallenge.presentation.ui.info
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -36,14 +36,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.newsapplicationchallenge.R
 import com.example.newsapplicationchallenge.data.common.Constants
-import com.example.newsapplicationchallenge.ui.theme.Black40
-import com.example.newsapplicationchallenge.ui.utils.ArrowBackIcon
-import com.example.newsapplicationchallenge.ui.utils.BookmarkIcon
-import com.example.newsapplicationchallenge.ui.utils.CircleIcon
-import com.example.newsapplicationchallenge.ui.utils.CommentButtonWithBackground
-import com.example.newsapplicationchallenge.ui.utils.LikeButtonWithBackground
-import com.example.newsapplicationchallenge.ui.utils.NewsAuthor
-import com.example.newsapplicationchallenge.ui.utils.NewsType
+import com.example.newsapplicationchallenge.presentation.theme.Black40
+import com.example.newsapplicationchallenge.presentation.ui.utils.ArrowBackIcon
+import com.example.newsapplicationchallenge.presentation.ui.utils.BookmarkIcon
+import com.example.newsapplicationchallenge.presentation.ui.utils.CircleIcon
+import com.example.newsapplicationchallenge.presentation.ui.utils.CommentButtonWithBackground
+import com.example.newsapplicationchallenge.presentation.ui.utils.LikeButtonWithBackground
+import com.example.newsapplicationchallenge.presentation.ui.utils.NewsAuthor
+import com.example.newsapplicationchallenge.presentation.ui.utils.NewsType
 
 @Composable
 fun InfoScreenPortrait(onBackClicked: () -> Unit) {

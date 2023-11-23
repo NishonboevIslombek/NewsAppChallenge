@@ -1,17 +1,13 @@
-package com.example.newsapplicationchallenge.ui.utils
+package com.example.newsapplicationchallenge.presentation.ui.utils
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MailOutline
-import androidx.compose.material.icons.rounded.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.newsapplicationchallenge.R
-import com.example.newsapplicationchallenge.ui.theme.LightGrayProgress
+import com.example.newsapplicationchallenge.presentation.theme.LightGrayProgress
 
 @Composable
 fun BookmarkIcon(

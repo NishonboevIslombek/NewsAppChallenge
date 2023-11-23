@@ -1,9 +1,5 @@
 package com.example.newsapplicationchallenge.presentation.ui.home
 
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.keyframes
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,9 +21,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +30,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.newsapplicationchallenge.R
-import com.example.newsapplicationchallenge.data.common.Constants
 import com.example.newsapplicationchallenge.data.common.Constants.testTopNewsList
 import com.example.newsapplicationchallenge.presentation.theme.Black25
 import com.example.newsapplicationchallenge.presentation.theme.LightGrayProgress
@@ -44,38 +37,12 @@ import com.example.newsapplicationchallenge.presentation.ui.utils.BookmarkIcon
 import com.example.newsapplicationchallenge.presentation.ui.utils.CircleIcon
 import com.example.newsapplicationchallenge.presentation.ui.utils.NewsAuthor
 import com.example.newsapplicationchallenge.presentation.ui.utils.NewsType
-import com.example.newsapplicationchallenge.presentation.utils.countDownForAction
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TopNewsSection(modifier: Modifier = Modifier) {
     val pagerState = rememberPagerState { testTopNewsList.size }
-    val scope = rememberCoroutineScope()
     val topNews = remember { testTopNewsList }
-    val infiniteTransition = rememberInfiniteTransition(label = "Indicator Animation")
-
-    val indicatorProgress = infiniteTransition.animateFloat(
-        initialValue = 0F,
-        targetValue = if (pagerState.currentPage == pagerState.settledPage) 1F else 0F,
-        animationSpec = infiniteRepeatable(
-            animation = keyframes {
-                durationMillis = Constants.TOP_NEWS_PAGER_SCROLL_DURATION.toInt()
-            }
-        ),
-        label = "Indicator Progress"
-    )
-
-    DisposableEffect(key1 = pagerState.currentPage) {
-        val countDownTimer =
-            scope.countDownForAction(millis = Constants.TOP_NEWS_PAGER_SCROLL_DURATION,
-                interval = Constants.TOP_NEWS_PAGER_SCROLL_INTERVAL,
-                action = {
-                    if (pagerState.canScrollForward) pagerState.animateScrollToPage(pagerState.settledPage + 1)
-                    else pagerState.animateScrollToPage(0)
-                }).start()
-        onDispose { countDownTimer.cancel() }
-    }
-
 
     Box(
         modifier = modifier
@@ -88,7 +55,6 @@ fun TopNewsSection(modifier: Modifier = Modifier) {
 
         IndicatorsRowTopNews(
             pagerState = pagerState,
-            indicatorState = indicatorProgress.value,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 20.dp)
@@ -117,8 +83,7 @@ private fun ViewPagerTopNews(
 @Composable
 private fun IndicatorsRowTopNews(
     modifier: Modifier = Modifier,
-    pagerState: PagerState,
-    indicatorState: Float
+    pagerState: PagerState
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -130,7 +95,6 @@ private fun IndicatorsRowTopNews(
         repeat(pagerState.pageCount) { pageIndex ->
             IndicatorElementTopNews(
                 pagesIndex = Pair(pageIndex, pagerState.settledPage),
-                indicatorState = indicatorState,
                 modifier = Modifier
                     .padding(2.dp)
                     .clip(MaterialTheme.shapes.extraSmall)
@@ -145,11 +109,10 @@ private fun IndicatorsRowTopNews(
 @Composable
 private fun IndicatorElementTopNews(
     modifier: Modifier = Modifier,
-    pagesIndex: Pair<Int, Int>,
-    indicatorState: Float
+    pagesIndex: Pair<Int, Int>
 ) {
     LinearProgressIndicator(
-        progress = if (pagesIndex.second == pagesIndex.first) indicatorState else 0f,
+        progress = if (pagesIndex.second == pagesIndex.first) 1f else 0f,
         color = MaterialTheme.colorScheme.tertiary,
         trackColor = LightGrayProgress,
         modifier = modifier

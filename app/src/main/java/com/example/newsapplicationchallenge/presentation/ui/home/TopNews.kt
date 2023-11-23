@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.home
+package com.example.newsapplicationchallenge.presentation.ui.home
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -38,13 +38,13 @@ import coil.compose.AsyncImage
 import com.example.newsapplicationchallenge.R
 import com.example.newsapplicationchallenge.data.common.Constants
 import com.example.newsapplicationchallenge.data.common.Constants.testTopNewsList
-import com.example.newsapplicationchallenge.ui.theme.Black25
-import com.example.newsapplicationchallenge.ui.theme.LightGrayProgress
-import com.example.newsapplicationchallenge.ui.utils.BookmarkIcon
-import com.example.newsapplicationchallenge.ui.utils.CircleIcon
-import com.example.newsapplicationchallenge.ui.utils.NewsAuthor
-import com.example.newsapplicationchallenge.ui.utils.NewsType
-import com.example.newsapplicationchallenge.utils.countDownForAction
+import com.example.newsapplicationchallenge.presentation.theme.Black25
+import com.example.newsapplicationchallenge.presentation.theme.LightGrayProgress
+import com.example.newsapplicationchallenge.presentation.ui.utils.BookmarkIcon
+import com.example.newsapplicationchallenge.presentation.ui.utils.CircleIcon
+import com.example.newsapplicationchallenge.presentation.ui.utils.NewsAuthor
+import com.example.newsapplicationchallenge.presentation.ui.utils.NewsType
+import com.example.newsapplicationchallenge.presentation.utils.countDownForAction
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

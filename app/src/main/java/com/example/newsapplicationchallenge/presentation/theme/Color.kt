@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.theme
+package com.example.newsapplicationchallenge.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

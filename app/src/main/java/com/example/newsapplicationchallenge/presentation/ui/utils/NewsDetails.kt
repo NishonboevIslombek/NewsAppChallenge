@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.utils
+package com.example.newsapplicationchallenge.presentation.ui.utils
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

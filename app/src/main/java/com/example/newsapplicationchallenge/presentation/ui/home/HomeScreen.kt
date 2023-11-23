@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.home
+package com.example.newsapplicationchallenge.presentation.ui.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,16 +27,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.newsapplicationchallenge.data.common.Constants
+import com.example.newsapplicationchallenge.domain.model.NewsItem
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenPortrait(onNewsClicked: () -> Unit) {
+fun HomeScreenPortrait(onNewsClicked: () -> Unit, uiState: HomeUiState) {
+    val currentUiState = rememberUpdatedState(newValue = uiState)
     Surface(color = MaterialTheme.colorScheme.background) {
         Scaffold(
             modifier = Modifier
@@ -44,18 +51,25 @@ fun HomeScreenPortrait(onNewsClicked: () -> Unit) {
                 TopBarHomeScreen(modifier = Modifier.padding(horizontal = 20.dp))
             }
         ) {
-            HomeScreen(
-                modifier = Modifier
-                    .padding(it)
-                    .padding(top = 20.dp)
-            ) { onNewsClicked() }
+            if (currentUiState.value.isLoading) CircularProgressIndicator(color = Color.Blue)
+            if (!currentUiState.value.isLoading)
+                HomeScreen(
+                    list = uiState.topNews,
+                    modifier = Modifier
+                        .padding(it)
+                        .padding(top = 20.dp), onNewsClicked = { onNewsClicked() }
+                )
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun HomeScreen(modifier: Modifier = Modifier, onNewsClicked: () -> Unit) {
+private fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onNewsClicked: () -> Unit,
+    list: List<NewsItem>
+) {
     val pagerState = rememberPagerState { Constants.testHomeTabList.size }
     val tabsList = remember { Constants.testHomeTabList.map { it.second } }
 
@@ -75,9 +89,10 @@ private fun HomeScreen(modifier: Modifier = Modifier, onNewsClicked: () -> Unit)
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
-        ViewPagerHomeScreen(pagerState = pagerState) {
-            onNewsClicked()
-        }
+        ViewPagerHomeScreen(
+            pagerState = pagerState,
+            topNews = list,
+            onNewsClicked = { onNewsClicked() })
     }
 }
 
@@ -86,7 +101,8 @@ private fun HomeScreen(modifier: Modifier = Modifier, onNewsClicked: () -> Unit)
 private fun ViewPagerHomeScreen(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
-    onNewsClicked: () -> Unit
+    onNewsClicked: () -> Unit,
+    topNews: List<NewsItem>
 ) {
     HorizontalPager(
         state = pagerState,
@@ -96,10 +112,11 @@ private fun ViewPagerHomeScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             contentPadding = PaddingValues(vertical = 10.dp)
         ) {
-
-            item { TopNewsSection() }
-            items(20) {
+//            item { TopNewsSection() }
+            items(topNews) {
                 SimpleNewsElement(
+                    title = it.title,
+                    imgUrl = it.urlToImage,
                     modifier = Modifier
                         .clickable {
                             onNewsClicked()
@@ -174,7 +191,7 @@ private fun TabElementHomeScreen(
             color = MaterialTheme.colorScheme.secondary
         ),
         modifier = modifier.clickable {
-            scope.launch { action() }
+            scope.launch(Dispatchers.Main) { action() }
         }
     )
 }

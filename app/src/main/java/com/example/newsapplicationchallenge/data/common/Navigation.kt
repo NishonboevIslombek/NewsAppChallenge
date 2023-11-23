@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.data
+package com.example.newsapplicationchallenge.data.common
 
 sealed class Navigation(val route: String) {
     object HomeScreen : Navigation("home_screen")

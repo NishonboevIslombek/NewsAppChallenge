@@ -74,7 +74,7 @@ private fun HomeScreen(
     val tabsList = remember { Constants.testHomeTabList.map { it.second } }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -89,42 +89,28 @@ private fun HomeScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         )
-        ViewPagerHomeScreen(
-            pagerState = pagerState,
-            topNews = list,
-            onNewsClicked = { onNewsClicked() })
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun ViewPagerHomeScreen(
-    modifier: Modifier = Modifier,
-    pagerState: PagerState,
-    onNewsClicked: () -> Unit,
-    topNews: List<NewsItem>
-) {
-    HorizontalPager(
-        state = pagerState,
-        modifier = modifier
-    ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            contentPadding = PaddingValues(vertical = 10.dp)
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
         ) {
-//            item { TopNewsSection() }
-            items(topNews) {
-                SimpleNewsElement(
-                    title = it.title,
-                    imgUrl = it.urlToImage,
-                    modifier = Modifier
-                        .clickable {
-                            onNewsClicked()
-                        }
-                        .padding(
-                            horizontal = 20.dp
-                        )
-                )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                contentPadding = PaddingValues(vertical = 10.dp)
+            ) {
+                item { TopNewsSection() }
+                items(list) {
+                    SimpleNewsElement(
+                        title = it.title,
+                        imgUrl = it.urlToImage,
+                        modifier = Modifier
+                            .clickable {
+                                onNewsClicked()
+                            }
+                            .padding(
+                                horizontal = 20.dp
+                            )
+                    )
+                }
             }
         }
     }

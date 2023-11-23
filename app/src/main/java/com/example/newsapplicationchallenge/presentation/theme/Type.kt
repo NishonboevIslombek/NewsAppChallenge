@@ -1,4 +1,4 @@
-package com.example.newsapplicationchallenge.ui.theme
+package com.example.newsapplicationchallenge.presentation.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography

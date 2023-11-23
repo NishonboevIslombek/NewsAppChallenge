@@ -1,8 +1,6 @@
-package com.example.newsapplicationchallenge.utils
+package com.example.newsapplicationchallenge.presentation.utils
 
 import android.os.CountDownTimer
-import android.util.Log
-import androidx.annotation.LongDef
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

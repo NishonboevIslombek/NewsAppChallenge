@@ -14,7 +14,25 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun getTopHeadlines(): Resource<NewsResponse> =
         withContext(Dispatchers.IO) {
             return@withContext try {
-                Resource.Success(newsApi.getTopNews())
+                Resource.Success(newsApi.getTopHeadlines())
+            } catch (throwable: Throwable) {
+                Resource.Error(throwable.message ?: "")
+            }
+        }
+
+    override suspend fun getRecentNews(): Resource<NewsResponse> =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Resource.Success(newsApi.getRecentNews())
+            } catch (throwable: Throwable) {
+                Resource.Error(throwable.message ?: "")
+            }
+        }
+
+    override suspend fun getPopularNews(): Resource<NewsResponse> =
+        withContext(Dispatchers.IO) {
+            return@withContext try {
+                Resource.Success(newsApi.getPopularNews())
             } catch (throwable: Throwable) {
                 Resource.Error(throwable.message ?: "")
             }

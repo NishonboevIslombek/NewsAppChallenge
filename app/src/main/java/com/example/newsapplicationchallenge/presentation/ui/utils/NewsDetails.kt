@@ -54,16 +54,16 @@ fun NewsAuthor(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.avatar),
-            contentDescription = "Author",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(24.dp)
-                .clip(CircleShape)
-        )
+//        Image(
+//            painter = painterResource(id = R.drawable.avatar),
+//            contentDescription = "Author",
+//            contentScale = ContentScale.Crop,
+//            modifier = Modifier
+//                .size(24.dp)
+//                .clip(CircleShape)
+//        )
         Text(
-            text = "Jean Prangley",
+            text = authorName,
             style = MaterialTheme.typography.labelSmall.copy(color = textColor),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

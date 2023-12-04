@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.newsapplicationchallenge.R
-import com.example.newsapplicationchallenge.data.common.Constants.testTopNewsList
+import com.example.newsapplicationchallenge.domain.model.NewsItem
 import com.example.newsapplicationchallenge.presentation.theme.Black25
 import com.example.newsapplicationchallenge.presentation.theme.LightGrayProgress
 import com.example.newsapplicationchallenge.presentation.ui.utils.BookmarkIcon
@@ -40,9 +40,9 @@ import com.example.newsapplicationchallenge.presentation.ui.utils.NewsType
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TopNewsSection(modifier: Modifier = Modifier) {
-    val pagerState = rememberPagerState { testTopNewsList.size }
-    val topNews = remember { testTopNewsList }
+fun TopNewsSection(modifier: Modifier = Modifier, topNewsList: List<NewsItem>) {
+    val topNews = remember { topNewsList.filter { !it.source.id.isNullOrBlank() } }
+    val pagerState = rememberPagerState { topNews.size }
 
     Box(
         modifier = modifier
@@ -50,8 +50,10 @@ fun TopNewsSection(modifier: Modifier = Modifier) {
     ) {
         ViewPagerTopNews(
             pagerState = pagerState,
-            titles = topNews.map { it.first },
-            imageUrls = topNews.map { it.second })
+            titles = topNews.map { it.title },
+            imageUrls = topNews.map { it.urlToImage },
+            authors = topNews.map { it.author ?: "" }
+        )
 
         IndicatorsRowTopNews(
             pagerState = pagerState,
@@ -69,12 +71,14 @@ private fun ViewPagerTopNews(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     titles: List<String>,
-    imageUrls: List<String>
+    imageUrls: List<String?>,
+    authors: List<String>
 ) {
     HorizontalPager(state = pagerState, modifier = modifier) {
         CardElementTopNews(
             title = titles[it],
-            imageUrl = imageUrls[it]
+            imageUrl = imageUrls[it],
+            author = authors[it]
         )
     }
 }
@@ -124,7 +128,8 @@ private fun IndicatorElementTopNews(
 fun CardElementTopNews(
     modifier: Modifier = Modifier,
     title: String,
-    imageUrl: String
+    imageUrl: String?,
+    author: String
 ) {
     Box(
         modifier = modifier
@@ -178,7 +183,7 @@ fun CardElementTopNews(
 
                 NewsAuthor(
                     authorImage = R.drawable.avatar,
-                    authorName = "Jean Prangley",
+                    authorName = author,
                     modifier = Modifier
                         .weight(1f, fill = false)
                 )

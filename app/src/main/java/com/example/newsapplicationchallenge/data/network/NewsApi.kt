@@ -11,8 +11,23 @@ interface NewsApi {
     }
 
     @GET("top-headlines")
-    suspend fun getTopNews(
+    suspend fun getTopHeadlines(
         @Query("country") country: String = "us",
+        @Query("pageSize") pageSize: Int = 10,
+        @Query("apiKey") apiKey: String = API_KEY
+    ): NewsResponse
+
+    //everything endpoint sortBy publishedAt query which is the newest articles come first
+    @GET("everything")
+    suspend fun getRecentNews(
+        @Query("domains") domain: String = "bbc.co.uk",
+        @Query("apiKey") apiKey: String = API_KEY
+    ): NewsResponse
+
+    @GET("everything")
+    suspend fun getPopularNews(
+        @Query("domains") domain: String = "bbc.co.uk",
+        @Query("sortBy") sortBy: String = "popularity",
         @Query("apiKey") apiKey: String = API_KEY
     ): NewsResponse
 }

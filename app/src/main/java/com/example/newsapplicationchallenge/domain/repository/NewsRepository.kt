@@ -5,4 +5,6 @@ import com.example.newsapplicationchallenge.domain.model.NewsResponse
 
 interface NewsRepository {
     suspend fun getTopHeadlines(): Resource<NewsResponse>
+    suspend fun getRecentNews(): Resource<NewsResponse>
+    suspend fun getPopularNews(): Resource<NewsResponse>
 }

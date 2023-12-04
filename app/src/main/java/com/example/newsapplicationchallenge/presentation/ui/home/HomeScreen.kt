@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
@@ -40,7 +39,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenPortrait(onNewsClicked: () -> Unit, uiState: HomeUiState) {
+fun HomeScreenPortrait(onNewsClicked: (item: NewsItem) -> Unit, uiState: HomeUiState) {
     val currentUiState = rememberUpdatedState(newValue = uiState)
     Surface(color = MaterialTheme.colorScheme.background) {
         Scaffold(
@@ -54,10 +53,14 @@ fun HomeScreenPortrait(onNewsClicked: () -> Unit, uiState: HomeUiState) {
             if (currentUiState.value.isLoading) CircularProgressIndicator(color = Color.Blue)
             if (!currentUiState.value.isLoading)
                 HomeScreen(
-                    list = uiState.topNews,
+                    recentNews = uiState.recentNews,
+                    popularNews = uiState.popularNews,
+                    topHeadlines = uiState.topHeadlines,
                     modifier = Modifier
                         .padding(it)
-                        .padding(top = 20.dp), onNewsClicked = { onNewsClicked() }
+                        .padding(top = 20.dp), onNewsClicked = { item ->
+                        onNewsClicked(item)
+                    }
                 )
         }
     }
@@ -67,11 +70,13 @@ fun HomeScreenPortrait(onNewsClicked: () -> Unit, uiState: HomeUiState) {
 @Composable
 private fun HomeScreen(
     modifier: Modifier = Modifier,
-    onNewsClicked: () -> Unit,
-    list: List<NewsItem>
+    onNewsClicked: (item: NewsItem) -> Unit,
+    recentNews: List<NewsItem>,
+    popularNews: List<NewsItem>,
+    topHeadlines: List<NewsItem>
 ) {
     val pagerState = rememberPagerState { Constants.testHomeTabList.size }
-    val tabsList = remember { Constants.testHomeTabList.map { it.second } }
+    val tabsList = remember { Constants.testHomeTabList }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -91,20 +96,26 @@ private fun HomeScreen(
         )
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier
+            modifier = Modifier,
+            key = {
+                tabsList[it].first
+            }
         ) {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 contentPadding = PaddingValues(vertical = 10.dp)
             ) {
-                item { TopNewsSection() }
-                items(list) {
+                if (it == 0) item {
+                    TopNewsSection(topNewsList = topHeadlines)
+                }
+                items(if (it == 0) recentNews else popularNews) {
                     SimpleNewsElement(
                         title = it.title,
                         imgUrl = it.urlToImage,
+                        publishedAt = it.publishedAt,
                         modifier = Modifier
                             .clickable {
-                                onNewsClicked()
+                                onNewsClicked(it)
                             }
                             .padding(
                                 horizontal = 20.dp
@@ -141,7 +152,7 @@ fun TabsRowHomeScreen(
     modifier: Modifier = Modifier,
     pageCount: Int,
     pagerIndex: Int,
-    tabsList: List<String>,
+    tabsList: List<Pair<Int, String>>,
     onTabClicked: suspend (rowIndex: Int) -> Unit
 ) {
     Row(
@@ -150,7 +161,7 @@ fun TabsRowHomeScreen(
     ) {
         repeat(pageCount) {
             TabElementHomeScreen(
-                label = tabsList[it],
+                label = tabsList[it].second,
                 page = Pair(it, pagerIndex),
                 action = { onTabClicked(it) })
         }
